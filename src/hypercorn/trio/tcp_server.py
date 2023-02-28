@@ -101,12 +101,12 @@ class TCPServer:
                     trio.BrokenResourceError,
                     trio.TooSlowError,
             ):
-                await self.protocol.handle(Closed())
                 break
             else:
                 await self.protocol.handle(RawData(data))
                 if data == b"":
                     break
+        await self.protocol.handle(Closed())
 
     async def _close(self) -> None:
         try:
